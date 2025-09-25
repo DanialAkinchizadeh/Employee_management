@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django
+*.log
+media/
+
+# Environment
+.env
+
+# Docker
+postgres_data/
+*.pid
+
+# IDEs
+.vscode/
+.idea/

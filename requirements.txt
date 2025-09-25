@@ -1,0 +1,7 @@
+django >3.2,<5.2
+psycopg2-binary
+python-decouple
+pillow
+gunicorn 
+dj-database-url
+whitenoise

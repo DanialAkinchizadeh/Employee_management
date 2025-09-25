@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل کاربر</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/profile_style.css' %}">
+    
+</head>
+<body>
+    
+
+<div class="container emp-profile">
+
+    {% if edit_mode %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    {% endif %}
+
+    <div class="row">
+        <!-- تصویر پروفایل -->
+        <div class="col-md-4">
+            <div class="profile-img">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="Profile Image"/>
+                {% else %}
+                    <img src="{% static 'img/profile_picture.jpg' %}" alt="Profile Image"/>
+                {% endif %}
+                {% if edit_mode %}
+                    <div class="file btn btn-lg btn-primary mt-2">
+                        تغییر عکس
+                        {{ form.profile_image }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- اطلاعات شخصی -->
+        <div class="col-md-6">
+            <a href="{% url 'home'%}" class="profile-edit-btn btn btn-primary" style='color:black;'>صفحه اصلی</a>
+            <div class="profile-head">
+                <h5>
+                    {% if edit_mode %}
+                        {{ form.first_name }} {{ form.last_name }}
+                    {% else %}
+                        {{ profile.first_name }} {{ profile.last_name }}
+                    {% endif %}
+                </h5>
+                <h6>
+                    {% if profile.is_present %}
+                        <span class="badge bg-success">حاضر</span>
+                    {% else %}
+                        <span class="badge bg-danger">غایب</span>
+                    {% endif %}
+                </h6>
+            </div>
+        </div>
+
+        <!-- دکمه ویرایش یا ذخیره -->
+        <div class="col-md-2">
+            
+            {% if edit_mode %}
+                <input type="submit" class="profile-edit-btn btn btn-success" value="ذخیره تغییرات"/>
+            {% else %}
+                <a href="?edit=true" class="profile-edit-btn btn btn-primary" style='color:black;'>ویرایش پروفایل</a>
+                
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- فیلدهای فرم / نمایش -->
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <div class="profile-tab">
+
+                <!-- دپارتمان -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">دپارتمان:</label>
+                    <div class="col-md-9">
+                        {% if edit_mode %}
+                            {{ form.department_of }}
+                        {% else %}
+                            {% for dep in category %}
+                                <p>{{ dep.title }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">نام:</label>
+                    <div class="col-md-9">
+                         {{ profile.first_name }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">نام خانوادگی:</label>
+                    <div class="col-md-9">
+                         {{ profile.last_name }}
+                    </div>
+                </div>
+                <!-- سن -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">سن:</label>
+                    <div class="col-md-9">
+                        {% if edit_mode %}
+                            {{ form.age }}
+                        {% else %}
+                            <p>{{ profile.age }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+
+                <!-- توضیحات کوتاه -->
+                {%if user.role == 'employee'%}
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">توضیحات کوتاه:</label>
+                    <div class="col-md-9">
+                        
+                        {% if edit_mode %}
+                            {{ form.short_description }}
+                        {% else %}
+                            <p>{{ profile.short_description }}</p>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+                {%endif%}
+
+                <!-- وضعیت حضور -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">وضعیت حضور:</label>
+                    <div class="col-md-9">
+                        {% if edit_mode %}
+                            {{ form.is_present }}
+                        {% else %}
+                            {% if profile.is_present %}
+                                <span class="badge bg-success">حاضر</span>
+                            {% else %}
+                                <span class="badge bg-danger">غایب</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- اطلاعات کاربری -->
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">ایمیل:</label>
+                    <div class="col-md-9"><p>{{ user.email }}</p></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">تلفن:</label>
+                    <div class="col-md-9"><p>{{ user.phone_number }}</p></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">سمت:</label>
+                    <div class="col-md-9">
+                        {% if user.role == 'ceo' %}مدیر عامل{% else %}کارمند{% endif %}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">زمان عضویت:</label>
+                    <div class="col-md-9"><p>{{ user.date_joined.date }}</p></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% if edit_mode %}
+    </form>
+    {% endif %}
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+</html>

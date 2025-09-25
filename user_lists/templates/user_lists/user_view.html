@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>لیست کارمندان</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    <!-- CSS جدا -->
+    <link rel="stylesheet" href="{% static 'css/user_view_style.css' %}">
+</head>
+<body>
+<div class="container bootstrap snippets bootdey">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                
+                <div class="table-responsive">
+                    <table class="table user-list" id="userTable">
+                        <thead>
+                            <tr>
+                                <th>کاربر</th>
+                                <th>بخش</th>
+                                <th>زمان پیوستن</th>
+                                <th class="text-center">وضعیت</th>
+                                <th>سن</th>
+                                <th>حذف کردن</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {%for user in object_list%}
+                                <td>
+                                    {%if user.profile_image%}
+                                    <img src="{{user.profile_image.url}}" alt="">
+                                    {%endif%}
+                                    <a href="{% url 'user_list:profile' user.id %}" class="user-link">{{user.first_name}}{{user.last_name}}</a>
+                                    
+                                </td>   
+                                <td>
+                                    {%for dep in user.department_of.all %}
+                                        <span class="user-subhead">{{dep.title}}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{user.date_joined.date}}</td>
+                               {%if user.is_present%}
+                                <td class="text-center">
+                                    <span class="label label-success">حاضر</span>
+                                </td>
+                                {% else %}
+                                 <td class="text-center">
+                                    <span class="label label-danger">غایب</span>
+                                </td>
+                                {% endif %}
+                                <td>{{user.age}}</td>
+                                <td style="width: 20%;">
+                                        <form method="post" action="{% url 'user_list:delete' user.id %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="table-link danger delete-user" style="color:red;"
+                                                    onclick="return confirm('آیا مطمئنید که می‌خواهید {{ user.first_name }} {{ user.last_name }} را حذف کنید؟');">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </button>
+                                         </form>
+                                </td>
+                                {%endfor%}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<!-- JS جدا -->
+<script src="{% static 'js/user_view_script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>پروفایل کارمند</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    <!-- CSS جدا -->
+    <link rel="stylesheet" href="{% static 'css/profile_view_style.css' %}">
+</head>
+<body>
+
+<div class="content">
+    <div class="card">
+        {%if user.profile_image.url%}
+        <div class="firstinfo"><img src="{{profile.profile_image.url}}" />
+        {% endif %}
+            <div class="profileinfo">
+                {%if profile.is_present%}
+                                <td class="text-center">
+                                    <span class="label label-success">حاضر</span>
+                                </td>
+                                {% else %}
+                                 <td class="text-center">
+                                    <span class="label label-danger">غایب</span>
+                                </td>
+                                {% endif %}
+                <h1>{{profile.first_name}} {{profile.last_name}}</h1>
+                {%for dep in profile.department_of.all%}
+                <h3>بخش:{{dep.title}}</h3>
+                {% endfor %}
+                <p class="bio">{{profile.short_description}}</p>
+            </div>
+        </div>
+    </div>
+    
+</div>
+</body>
+</html>

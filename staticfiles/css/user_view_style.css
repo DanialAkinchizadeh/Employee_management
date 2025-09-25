@@ -1,0 +1,41 @@
+body {
+    background:#eee;    
+}
+.main-box {
+    background:#fff;
+    box-shadow: 1px 1px 2px 0 #ccc;
+    border-radius: 3px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.table a.table-link.danger {
+    color: #e74c3c;
+}
+.user-list tbody td .user-subhead {
+    font-size: 0.875em;
+    font-style: italic;
+}
+.user-list tbody td .user-link {
+    display: block;
+    font-size: 1.25em;
+    margin-left: 60px;
+}
+.user-list tbody td>img {
+    max-width: 50px;
+    float: left;
+    margin-right: 15px;
+}
+.table thead tr th {
+    text-transform: uppercase;
+    font-size: 0.875em;
+    border-bottom: 2px solid #e7ebee;
+}
+.table tbody tr td {
+    font-size: 0.875em;
+    vertical-align: middle;
+    border-top: 1px solid #e7ebee;
+    padding: 12px 8px;
+}
+.add-user-btn {
+    margin-bottom: 15px;
+}
